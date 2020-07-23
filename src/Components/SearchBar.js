@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -7,9 +7,9 @@ import InputBase from "@material-ui/core/InputBase";
 import { connect } from "react-redux";
 import SearchIcon from "@material-ui/icons/Search";
 import {
-  deleteContact,
-  editContact,
-  addButtonClickFunction
+  searchContact,
+  addButtonClickFunction,
+  clearSearch
 } from "../Redux/Actions/actions";
 import Button from "@material-ui/core/Button";
 
@@ -77,8 +77,32 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SearchBar = ({ addButtonClick, addButtonClickFunction }) => {
+const SearchBar = ({
+  addButtonClick,
+  addButtonClickFunction,
+  searchText,
+  searchContact,
+  clearSearch,
+  initialContacts
+}) => {
   const classes = useStyles();
+  const [sText, setSText] = useState("");
+
+  const searchTextFunction = event => {
+    setSText(event.target.value);
+  };
+
+  const searchFunction = () => {
+    // alert(sText);
+    if (sText) {
+      searchContact(sText);
+    } else searchClearFunction();
+  };
+
+  const searchClearFunction = () => {
+    setSText("");
+    clearSearch();
+  };
 
   return (
     <div className={classes.grow}>
@@ -98,9 +122,23 @@ const SearchBar = ({ addButtonClick, addButtonClickFunction }) => {
                 input: classes.inputInput
               }}
               inputProps={{ "aria-label": "search" }}
+              value={sText}
+              onChange={searchTextFunction}
+              onKeyUp={searchFunction}
             />
           </div>
-          <Button onClick={addButtonClickFunction} variant="contained">
+          {/* <Button onClick={searchFunction} variant="contained">
+            Search
+          </Button>
+          <Button onClick={searchClearFunction} variant="contained">
+            Clear Search
+          </Button> */}
+
+          <Button
+            className="addNewContactButton"
+            onClick={addButtonClickFunction}
+            variant="contained"
+          >
             {addButtonClick ? "Close Form" : "Add new Contact"}
           </Button>
         </Toolbar>
@@ -111,15 +149,17 @@ const SearchBar = ({ addButtonClick, addButtonClickFunction }) => {
 
 const mapStateToProps = state => {
   return {
-    addButtonClick: state.addButtonClick
+    addButtonClick: state.addButtonClick,
+    searchText: state.searchText,
+    initialContacts: state.initialContacts
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     addButtonClickFunction: () => dispatch(addButtonClickFunction()),
-    deleteProduct: name => dispatch(deleteContact(name)),
-    editProduct: editedContact => dispatch(editContact(editedContact))
+    searchContact: searchText => dispatch(searchContact(searchText)),
+    clearSearch: () => dispatch(clearSearch())
   };
 };
 

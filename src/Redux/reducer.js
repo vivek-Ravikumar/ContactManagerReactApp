@@ -3,7 +3,9 @@ import {
   EDIT_CONTACT,
   DELETE_CONTACT,
   ADD_BUTTON_CLICK,
-  UPDATE_CONTACT
+  UPDATE_CONTACT,
+  SEARCH_CONTACT,
+  CLEAR_SEARCH
 } from "./Actions/actionTypes";
 const today = new Date();
 const date =
@@ -11,8 +13,11 @@ const date =
 
 const initialState = {
   addButtonClick: false,
+  searchText: "",
   currentContact: { name: "", number: "", location: "" },
   editingContact: false,
+  searching: false,
+  filteredContacts: [],
   allContacts: [
     {
       _id: "456446",
@@ -59,7 +64,8 @@ const initialState = {
       incomingCallCount: 5,
       outgoingCallCount: 6
     }
-  ]
+  ],
+  initialContacts: []
 };
 
 const Reducer = (state = initialState, action) => {
@@ -118,7 +124,7 @@ const Reducer = (state = initialState, action) => {
           };
         }
       });
-      console.log(updatedContacts);
+      //  console.log(updatedContacts);
       return {
         ...state,
         addButtonClick: true,
@@ -126,6 +132,31 @@ const Reducer = (state = initialState, action) => {
         allContacts: updatedContacts
       };
 
+    case SEARCH_CONTACT:
+      // alert(action.payload);
+      if (action.payload) {
+        // const filteredContacts = state.allContacts.filter(
+        //   ct => ct.name.toLowerCase() === action.payload.toLowerCase()
+        // );
+
+        const filteredContacts = state.allContacts.filter(
+          ct => ct.name.toLowerCase().indexOf(action.payload.toLowerCase()) > -1
+        );
+
+        return {
+          ...state,
+          filteredContacts: filteredContacts,
+          searching: true
+        };
+      } else return { ...state };
+
+    case CLEAR_SEARCH:
+      // console.log(state.allContacts);
+      return {
+        ...state,
+        filteredContacts: state.allContacts,
+        searching: false
+      };
     default:
       return state;
   }

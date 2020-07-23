@@ -1,23 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Table from "../Components/Table";
-import Navbar from "../Components/Navbar";
 import SearchBar from "../Components/SearchBar";
 import ContactForm from "../Components/ContactForm";
 import { connect } from "react-redux";
 import { deleteContact, editContact } from "../Redux/Actions/actions";
-const HomePage = ({ allContacts }) => {
+const HomePage = ({ allContacts, filteredContacts, searching }) => {
+  const [contacts, setContacts] = useState(allContacts);
+
+  useEffect(() => {
+    if (searching) {
+      setContacts(filteredContacts);
+    } else setContacts(allContacts);
+  }, [searching, filteredContacts, allContacts]);
+
   return (
     <div>
       <SearchBar />
       <ContactForm />
-      <Table contacts={allContacts} />
+      <Table contacts={contacts} />
     </div>
   );
 };
 
 const mapStateToProps = state => {
   return {
-    allContacts: state.allContacts
+    allContacts: state.allContacts,
+    filteredContacts: state.filteredContacts,
+    searching: state.searching
   };
 };
 

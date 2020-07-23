@@ -3,7 +3,9 @@ import {
   EDIT_CONTACT,
   DELETE_CONTACT,
   ADD_BUTTON_CLICK,
-  UPDATE_CONTACT
+  UPDATE_CONTACT,
+  SEARCH_CONTACT,
+  CLEAR_SEARCH
 } from "./actionTypes";
 
 export const addButtonClickFunction = () => {
@@ -39,3 +41,17 @@ export const updateContact = updatedContact => {
     payload: updatedContact
   };
 };
+
+
+export const searchContact=searchText=>{
+  return {
+    type: SEARCH_CONTACT,
+    payload: searchText
+  };
+}
+
+export const clearSearch=()=>{
+  return {
+    type: CLEAR_SEARCH,
+  };
+}

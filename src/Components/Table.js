@@ -16,23 +16,7 @@ const useStyles = makeStyles({
   }
 });
 
-function createData(
-  name,
-  createdDate,
-  number,
-  incomingCallCount,
-  location,
-  outgoingCallCount
-) {
-  return {
-    name,
-    createdDate,
-    number,
-    incomingCallCount,
-    location,
-    outgoingCallCount
-  };
-}
+
 
 function SimpleTable({ contacts, editContact, deleteContact }) {
   const classes = useStyles();
