@@ -1,9 +1,14 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
-import { deleteContact, editContact } from "../Redux/Actions/actions";
+import {
+  deleteContact,
+  editContact,
+  updateContact,
+  addContact
+} from "../Redux/Actions/actions";
 const useStyles = makeStyles(theme => ({
   root: {
     "& > *": {
@@ -13,21 +18,32 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function ContactForm({ addButtonClick, currentContact }) {
+function ContactForm({
+  addButtonClick,
+  currentContact,
+  updateContact,
+  addContact,
+  editingContact
+}) {
   const classes = useStyles();
+  useEffect(() => {
+    setContact(currentContact);
+  }, [currentContact]);
 
   const [contact, setContact] = useState(currentContact);
-
+  const { name = "", number = "", location = "" } = contact;
   const changehandler = event => {
     setContact({ ...contact, [event.target.name]: event.target.value });
   };
 
   const SubmitFunction = event => {
     event.preventDefault();
-    alert(contact.name);
+    if (editingContact) {
+      updateContact(contact);
+    } else {
+      addContact(contact);
+    }
   };
-
-  const { name, number, location } = currentContact;
 
   return (
     <div>
@@ -65,7 +81,7 @@ function ContactForm({ addButtonClick, currentContact }) {
               variant="contained"
               color="primary"
             >
-              {0 === null ? "Add contact" : "update Contact"}
+              {editingContact === false ? "Add contact" : "update Contact"}
             </Button>
           </form>
           <br />{" "}
@@ -78,14 +94,17 @@ function ContactForm({ addButtonClick, currentContact }) {
 const mapStateToProps = state => {
   return {
     addButtonClick: state.addButtonClick,
-    currentContact: state.currentContact
+    currentContact: state.currentContact,
+    editingContact: state.editingContact
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     deleteProduct: name => dispatch(deleteContact(name)),
-    editContact: editedContact => dispatch(editContact(editedContact))
+    editContact: editedContact => dispatch(editContact(editedContact)),
+    updateContact: updatedContact => dispatch(updateContact(updatedContact)),
+    addContact: addedContact => dispatch(addContact(addedContact))
   };
 };
 

@@ -7,8 +7,6 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import EditIcon from "@material-ui/icons/Edit";
-import DeleteIcon from "@material-ui/icons/Delete";
 import { connect } from "react-redux";
 import { deleteContact, editContact } from "../Redux/Actions/actions";
 
@@ -40,14 +38,14 @@ function SimpleTable({ contacts, editContact, deleteContact }) {
   const classes = useStyles();
 
   const editingContact = e => {
-    const name = e.target.id;
-    editContact(name);
+    const _id = e.target.id;
+    editContact(_id);
   };
 
   const deletingContact = e => {
-    const name = e.target.id;
-
-    deleteContact(name);
+    const _id = e.target.id;
+    //alert(_id);
+    deleteContact(_id);
   };
 
   return (
@@ -77,13 +75,13 @@ function SimpleTable({ contacts, editContact, deleteContact }) {
               <TableCell align="center">{row.outgoingCallCount}</TableCell>
               <TableCell align="center">
                 <i
-                  id={row.name}
+                  id={row._id}
                   onClick={deletingContact}
                   className="fas fa-trash"
                 />{" "}
                 &nbsp;
                 <i
-                  id={row.name}
+                  id={row._id}
                   onClick={editingContact}
                   className="fas fa-edit"
                 />
@@ -105,9 +103,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    deleteContact: deletedContactName =>
-      dispatch(deleteContact(deletedContactName)),
-    editContact: editedContactName => dispatch(editContact(editedContactName))
+    deleteContact: deletedContact_id =>
+      dispatch(deleteContact(deletedContact_id)),
+    editContact: editedContactName_id =>
+      dispatch(editContact(editedContactName_id))
   };
 };
 

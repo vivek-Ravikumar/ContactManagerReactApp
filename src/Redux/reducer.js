@@ -2,7 +2,8 @@ import {
   ADD_CONTACT,
   EDIT_CONTACT,
   DELETE_CONTACT,
-  ADD_BUTTON_CLICK
+  ADD_BUTTON_CLICK,
+  UPDATE_CONTACT
 } from "./Actions/actionTypes";
 const today = new Date();
 const date =
@@ -11,8 +12,10 @@ const date =
 const initialState = {
   addButtonClick: false,
   currentContact: { name: "", number: "", location: "" },
+  editingContact: false,
   allContacts: [
     {
+      _id: "456446",
       name: "Dany",
       createdDate: date,
       number: "789787979",
@@ -21,6 +24,7 @@ const initialState = {
       outgoingCallCount: 6
     },
     {
+      _id: "4564",
       name: "Rohit",
       createdDate: date,
       number: "789787979",
@@ -29,6 +33,7 @@ const initialState = {
       outgoingCallCount: 6
     },
     {
+      _id: "45646",
       name: "Ram",
       createdDate: date,
       number: "789787979",
@@ -37,6 +42,7 @@ const initialState = {
       outgoingCallCount: 6
     },
     {
+      _id: "456746",
       name: "Satheesh",
       createdDate: date,
       number: "789787979",
@@ -45,6 +51,7 @@ const initialState = {
       outgoingCallCount: 6
     },
     {
+      _id: "456449",
       name: "Salman",
       createdDate: date,
       number: "789787979",
@@ -60,28 +67,63 @@ const Reducer = (state = initialState, action) => {
     case ADD_BUTTON_CLICK:
       return {
         ...state,
+        currentContact: { name: "", number: "", location: "" },
         addButtonClick: !state.addButtonClick
       };
 
     case ADD_CONTACT:
-      return {
-        ...state,
-        addContact: true
+      const newContact = {
+        _id: String(Math.random() * 100000),
+        createdDate: date,
+        outgoingCallCount: 0,
+        incomingCallCount: 0,
+        ...action.payload
       };
-    case DELETE_CONTACT:
+      const newAllContacts = [...state.allContacts, newContact];
+      //console.log(newAllContacts);
       return {
         ...state,
-        allContacts: state.allContacts.filter(ct => ct.name !== action.payload)
+        allContacts: newAllContacts,
+        editingContact: false,
+        currentContact: { name: "", number: "", location: "" }
       };
     case EDIT_CONTACT:
-      const editedContact = state.allContacts.filter(
-        ct => ct.name === action.payload
+      const updatedCurrentContact = state.allContacts.filter(
+        ct => ct._id === action.payload
       );
-      console.log(editedContact);
       return {
         ...state,
         addButtonClick: true,
-        currentContact: editedContact[0]
+        editingContact: true,
+        currentContact: updatedCurrentContact[0]
+      };
+    case DELETE_CONTACT:
+      const updatedAllContacts = state.allContacts.filter(
+        ct => ct._id !== action.payload
+      );
+      return {
+        ...state,
+        allContacts: updatedAllContacts
+      };
+    case UPDATE_CONTACT:
+      const updatedContacts = state.allContacts.map(ct => {
+        if (ct._id === action.payload._id) {
+          return {
+            ...ct,
+            ...action.payload
+          };
+        } else {
+          return {
+            ...ct
+          };
+        }
+      });
+      console.log(updatedContacts);
+      return {
+        ...state,
+        addButtonClick: true,
+        currentContact: { name: "", number: "", location: "" },
+        allContacts: updatedContacts
       };
 
     default:

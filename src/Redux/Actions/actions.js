@@ -2,7 +2,8 @@ import {
   ADD_CONTACT,
   EDIT_CONTACT,
   DELETE_CONTACT,
-  ADD_BUTTON_CLICK
+  ADD_BUTTON_CLICK,
+  UPDATE_CONTACT
 } from "./actionTypes";
 
 export const addButtonClickFunction = () => {
@@ -18,16 +19,23 @@ export const addContact = addedContact => {
   };
 };
 
-export const editContact = editedContactName => {
+export const editContact = editedContact => {
   return {
     type: EDIT_CONTACT,
-    payload: editedContactName
+    payload: editedContact
   };
 };
 
-export const deleteContact = deletedContactName => {
+export const deleteContact = deletedContact_id => {
   return {
     type: DELETE_CONTACT,
-    payload: deletedContactName
+    payload: deletedContact_id
+  };
+};
+
+export const updateContact = updatedContact => {
+  return {
+    type: UPDATE_CONTACT,
+    payload: updatedContact
   };
 };
