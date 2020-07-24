@@ -6,3 +6,9 @@
 .addNewContactButton {
   margin-left: 50%;
 }
+
+.spinner {
+  position: absolute;
+  left: 50%;
+  margin-left: -50px;
+}

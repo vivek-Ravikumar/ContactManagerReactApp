@@ -7,7 +7,9 @@ import {
   deleteContact,
   editContact,
   updateContact,
-  addContact
+  addContact,
+  updateContactRequest,
+  addContactRequest
 } from "../Redux/Actions/actions";
 const useStyles = makeStyles(theme => ({
   root: {
@@ -23,7 +25,9 @@ function ContactForm({
   currentContact,
   updateContact,
   addContact,
-  editingContact
+  editingContact,
+  updateContactRequest,
+  addContactRequest
 }) {
   const classes = useStyles();
   useEffect(() => {
@@ -39,9 +43,11 @@ function ContactForm({
   const SubmitFunction = event => {
     event.preventDefault();
     if (editingContact) {
-      updateContact(contact);
+      // updateContact(contact);
+      updateContactRequest(contact);
     } else {
-      addContact(contact);
+      //addContact(contact);
+      addContactRequest(contact);
     }
   };
 
@@ -104,7 +110,10 @@ const mapDispatchToProps = dispatch => {
     deleteProduct: name => dispatch(deleteContact(name)),
     editContact: editedContact => dispatch(editContact(editedContact)),
     updateContact: updatedContact => dispatch(updateContact(updatedContact)),
-    addContact: addedContact => dispatch(addContact(addedContact))
+    updateContactRequest: updatedContact =>
+      dispatch(updateContactRequest(updatedContact)),
+    addContact: addedContact => dispatch(addContact(addedContact)),
+    addContactRequest: addedContact => dispatch(addContactRequest(addedContact))
   };
 };
 

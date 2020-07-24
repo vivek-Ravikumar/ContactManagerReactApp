@@ -5,7 +5,16 @@ import {
   ADD_BUTTON_CLICK,
   UPDATE_CONTACT,
   SEARCH_CONTACT,
-  CLEAR_SEARCH
+  CLEAR_SEARCH,
+  BACKEND_FETCH_REQUEST,
+  FETCH_ALL_CONTACTS_FAILURE,
+  FETCH_ALL_CONTACTS_SUCCESS,
+  DELETE_CONTACT_FAILURE,
+  DELETE_CONTACT_SUCCESS,
+  UPDATE_CONTACT_SUCCESS,
+  UPDATE_CONTACT_FAILURE,
+  ADD_CONTACT_FAILURE,
+  ADD_CONTACT_SUCCESS
 } from "./Actions/actionTypes";
 const today = new Date();
 const date =
@@ -18,10 +27,12 @@ const initialState = {
   editingContact: false,
   searching: false,
   filteredContacts: [],
+  loading: false,
+  errors: "",
   allContacts: [
     {
       _id: "456446",
-      name: "Dany",
+      name: "SampleData",
       createdDate: date,
       number: "999787979",
       location: "chennai",
@@ -36,60 +47,6 @@ const initialState = {
       location: "chennai",
       incomingCallCount: 5,
       outgoingCallCount: 6
-    },
-    {
-      _id: "45646",
-      name: "Ram",
-      createdDate: date,
-      number: "889787979",
-      location: "chennai",
-      incomingCallCount: 5,
-      outgoingCallCount: 6
-    },
-    {
-      _id: "456746",
-      name: "Satheesh",
-      createdDate: date,
-      number: "789787979",
-      location: "chennai",
-      incomingCallCount: 5,
-      outgoingCallCount: 6
-    },
-    {
-      _id: "456449",
-      name: "Salman",
-      createdDate: date,
-      number: "789787979",
-      location: "Pune",
-      incomingCallCount: 5,
-      outgoingCallCount: 6
-    },
-    {
-      _id: "956446",
-      name: "DanyAlfred",
-      createdDate: date,
-      number: "789787979",
-      location: "trichy",
-      incomingCallCount: 5,
-      outgoingCallCount: 6
-    },
-    {
-      _id: "94564",
-      name: "RohitJogi",
-      createdDate: date,
-      number: "789787979",
-      location: "Hyderabad",
-      incomingCallCount: 5,
-      outgoingCallCount: 6
-    },
-    {
-      _id: "945646",
-      name: "RamKumar",
-      createdDate: date,
-      number: "780787179",
-      location: "Delhi",
-      incomingCallCount: 5,
-      outgoingCallCount: 6
     }
   ],
   initialContacts: []
@@ -97,9 +54,73 @@ const initialState = {
 
 const Reducer = (state = initialState, action) => {
   switch (action.type) {
+    case BACKEND_FETCH_REQUEST: {
+      return {
+        ...state,
+        loading: true
+      };
+    }
+    case FETCH_ALL_CONTACTS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        allContacts: action.payload
+      };
+    case FETCH_ALL_CONTACTS_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        errors: action.payload
+      };
+
+    case DELETE_CONTACT_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        errors: ""
+      };
+    case DELETE_CONTACT_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        errors: action.payload
+      };
+
+    case UPDATE_CONTACT_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        errors: "",
+        editingContact: false,
+        currentContact: { name: "", number: "", location: "" }
+      };
+    case UPDATE_CONTACT_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        errors: action.payload
+      };
+
+    case ADD_CONTACT_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        errors: "",
+
+        currentContact: { name: "", number: "", location: "" }
+      };
+
+    case ADD_CONTACT_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        errors: action.payload
+      };
+
     case ADD_BUTTON_CLICK:
       return {
         ...state,
+        editingContact: false,
         currentContact: { name: "", number: "", location: "" },
         addButtonClick: !state.addButtonClick
       };
@@ -124,6 +145,7 @@ const Reducer = (state = initialState, action) => {
       const updatedCurrentContact = state.allContacts.filter(
         ct => ct._id === action.payload
       );
+      console.log(updatedCurrentContact);
       return {
         ...state,
         addButtonClick: true,
@@ -165,7 +187,6 @@ const Reducer = (state = initialState, action) => {
         // const filteredContacts = state.allContacts.filter(
         //   ct => ct.name.toLowerCase() === action.payload.toLowerCase()
         // );
-
         const filteredContacts = state.allContacts.filter(
           ct => ct.name.toLowerCase().indexOf(action.payload.toLowerCase()) > -1
         );
@@ -178,7 +199,6 @@ const Reducer = (state = initialState, action) => {
       } else return { ...state };
 
     case CLEAR_SEARCH:
-      // console.log(state.allContacts);
       return {
         ...state,
         filteredContacts: state.allContacts,

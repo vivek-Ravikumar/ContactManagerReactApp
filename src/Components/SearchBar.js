@@ -127,12 +127,6 @@ const SearchBar = ({
               onKeyUp={searchFunction}
             />
           </div>
-          {/* <Button onClick={searchFunction} variant="contained">
-            Search
-          </Button>
-          <Button onClick={searchClearFunction} variant="contained">
-            Clear Search
-          </Button> */}
 
           <Button
             className="addNewContactButton"

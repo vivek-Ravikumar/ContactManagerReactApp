@@ -8,7 +8,11 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { connect } from "react-redux";
-import { deleteContact, editContact } from "../Redux/Actions/actions";
+import {
+  deleteContact,
+  editContact,
+  deleteContactRequest
+} from "../Redux/Actions/actions";
 
 const useStyles = makeStyles({
   table: {
@@ -16,7 +20,12 @@ const useStyles = makeStyles({
   }
 });
 
-function SimpleTable({ contacts, editContact, deleteContact }) {
+function SimpleTable({
+  contacts,
+  editContact,
+  deleteContact,
+  deleteContactRequest
+}) {
   const classes = useStyles();
 
   const editingContact = e => {
@@ -27,7 +36,8 @@ function SimpleTable({ contacts, editContact, deleteContact }) {
   const deletingContact = e => {
     const _id = e.target.id;
     //alert(_id);
-    deleteContact(_id);
+    // deleteContact(_id);
+    deleteContactRequest(_id);
   };
 
   return (
@@ -87,6 +97,8 @@ const mapDispatchToProps = dispatch => {
   return {
     deleteContact: deletedContact_id =>
       dispatch(deleteContact(deletedContact_id)),
+    deleteContactRequest: deletedContact_id =>
+      dispatch(deleteContactRequest(deletedContact_id)),
     editContact: editedContactName_id =>
       dispatch(editContact(editedContactName_id))
   };
