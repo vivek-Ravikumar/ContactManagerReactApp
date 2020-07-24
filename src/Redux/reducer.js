@@ -23,7 +23,7 @@ const initialState = {
       _id: "456446",
       name: "Dany",
       createdDate: date,
-      number: "789787979",
+      number: "999787979",
       location: "chennai",
       incomingCallCount: 5,
       outgoingCallCount: 6
@@ -32,7 +32,7 @@ const initialState = {
       _id: "4564",
       name: "Rohit",
       createdDate: date,
-      number: "789787979",
+      number: "911111979",
       location: "chennai",
       incomingCallCount: 5,
       outgoingCallCount: 6
@@ -41,7 +41,7 @@ const initialState = {
       _id: "45646",
       name: "Ram",
       createdDate: date,
-      number: "789787979",
+      number: "889787979",
       location: "chennai",
       incomingCallCount: 5,
       outgoingCallCount: 6
@@ -60,7 +60,34 @@ const initialState = {
       name: "Salman",
       createdDate: date,
       number: "789787979",
-      location: "chennai",
+      location: "Pune",
+      incomingCallCount: 5,
+      outgoingCallCount: 6
+    },
+    {
+      _id: "956446",
+      name: "DanyAlfred",
+      createdDate: date,
+      number: "789787979",
+      location: "trichy",
+      incomingCallCount: 5,
+      outgoingCallCount: 6
+    },
+    {
+      _id: "94564",
+      name: "RohitJogi",
+      createdDate: date,
+      number: "789787979",
+      location: "Hyderabad",
+      incomingCallCount: 5,
+      outgoingCallCount: 6
+    },
+    {
+      _id: "945646",
+      name: "RamKumar",
+      createdDate: date,
+      number: "780787179",
+      location: "Delhi",
       incomingCallCount: 5,
       outgoingCallCount: 6
     }

@@ -16,6 +16,7 @@ const HomePage = ({ allContacts, filteredContacts, searching }) => {
   return (
     <div>
       <SearchBar />
+      <br />
       <ContactForm />
       <Table contacts={contacts} />
     </div>

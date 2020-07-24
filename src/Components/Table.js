@@ -16,8 +16,6 @@ const useStyles = makeStyles({
   }
 });
 
-
-
 function SimpleTable({ contacts, editContact, deleteContact }) {
   const classes = useStyles();
 
